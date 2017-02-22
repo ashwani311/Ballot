@@ -13,6 +13,29 @@
 	</head>
 	<body class="grey lighten-5">
    
+		<ul id="slide-out" class="side-nav white darken-2 z-depth-3">
+			<li>
+				<div class="userView">
+					<a><span id="userName" class="white-text name"></span></a>
+					<a><span id="userEmail" class="white-text email f-100"></span></a>
+				</div>
+            </li>
+			<li><a href="/new/" class="waves-effect"><i class="fa fa-plus-circle" aria-hidden="true"></i> New Item </a></li>
+			<li><a class="waves-effect" id="logout"> <i class="fa fa-power-off" aria-hidden="true"></i>Sign Out</a></li>
+		</ul>
+    
+        <nav>
+            <div class="nav-wrapper">
+              <a href="#" class="brand-logo center">OBallot</a>
+              <a id="sideNavbtn" class="button-collapse show-on-large" data-activates="slide-out"><i class="fa fa-bars fa-3" aria-hidden="true"></i>
+              </a>   
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#">Link 1</a></li>
+                <li><a href="#">Link 2</a></li>
+                <li><a href="#">Link 3</a></li>
+              </ul>
+            </div>
+        </nav>
            
         <script type="text/javascript" src="jquery/jquery.js"></script>
 		<script type="text/javascript" src="materialize/js/materialize.js"></script>
