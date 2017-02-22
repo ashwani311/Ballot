@@ -1,0 +1,130 @@
+.margin-top-10 {
+    margin-top: 10vh;
+}
+
+.margin-top-5 {
+    margin-top: 5vh;
+}
+
+.translusent-black {
+    background-color: rgba(0,0,0,0.5);
+}
+.btn-floating.translusent-black:hover{
+    background-color: rgba(0,0,0,0.6);
+}
+.translusent-black.darken-1 {
+    background-color: rgba(0,0,0,.7);
+}
+
+
+
+.f-200 {
+    font-weight: 200;
+}
+
+.translusent-white {
+    background-color: rgba(255,255,255,.25);
+}
+.translusent-white.darken-1 {
+    background-color: rgba(255,255,255,.65);
+}
+.translusent-white.darken-2 {
+    background-color: rgba(255,255,255,.8);
+}
+
+.translusent-black-text {
+    color: rgba(0,0,0,.5) !important;
+}
+
+.no-margin {
+    margin: 0px;
+}
+
+.f-300 {
+    font-weight: 300;
+}
+
+.no-block {
+    display: inline-block
+}
+
+.menu{
+    height: 48px !important;
+    width: 48px;
+    padding-top: 4px;
+    top: 6px;
+}
+.menu:hover{
+    background-color: rgba(255,255,255,.5);
+}
+.menu:focus{
+    background-color: rgba(255,255,255,.5);
+}
+
+.translusent-facebook {
+    background-color: rgba(59,89,152,0.7);
+}
+
+.translusent-gplus {
+    background-color: rgba(211, 72, 54,0.70);
+}
+
+.translusent-git {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.translusent-twitter {
+    background-color: rgba(0,132,180,0.7)
+}
+
+.f-100 {
+    font-weight: 100 !important;
+}
+
+.no-border {
+    border: 0px;
+}
+
+.no-height {
+    height: auto;
+}
+
+.padding-top-5 {
+    padding-top: 5vh;
+}
+
+.input-field label {
+     color: rgba(0,0,0,0.8);
+}
+
+/* label focus color */
+.input-field input[type=text]:focus + label {
+ color: rgba(0,0,0,0.8);
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+ border-bottom: 1px solid rgba(0,0,0,0.8);
+ box-shadow: 0 1px 0 0 rgba(0,0,0,0.8);
+}
+/* valid color */
+.input-field input[type=text].valid {
+ border-bottom: 1px solid rgba(0,0,0,0.8);
+ box-shadow: 0 1px 0 0 rgba(0,0,0,0.8);
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+ border-bottom: 1px solid rgba(0,0,0,0.8);
+ box-shadow: 0 1px 0 0 rgba(0,0,0,0.8);
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+ color: rgba(0,0,0,0.8);
+}
+
+        
+
+
+
+.brand-logo {
+    font-family: 'Gloria Hallelujah', cursive;
+}
