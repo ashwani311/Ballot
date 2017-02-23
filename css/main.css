@@ -1,4 +1,55 @@
-
+* {
+    font-family: roboto;
+}
 .brand-logo {
     font-family: 'Gloria Hallelujah', cursive;
+}
+
+.signup-title {
+    height: 70px;
+}
+
+.margin-left-10 {
+    margin-left: 10vw;
+}
+
+.margin-right-10 {
+    margin-right: 10vw;
+}
+
+.margin-top-5 {
+    margin-top: 5vh;
+}
+
+.margin-top-12px {
+    margin-top: 12px;
+}
+
+.padding-top-20px {
+    padding-top: 20px;
+}
+
+.f-200 {
+    font-weight: 200;
+}
+
+.s-30 {
+    font-size: 30px;
+}
+
+.s-20 {
+    font-size: 20px;
+}
+.s-25 {
+    font-size: 25px;
+}
+
+
+@media (max-width: 767px){
+    .s-30 {
+        font-size: 20px;
+    }
+    .s-25 {
+        font-size: 15px;
+    }
 }
