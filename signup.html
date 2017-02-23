@@ -13,7 +13,7 @@
 	</head>
 	<body class="white">
         <nav>
-            <div class="z-depth-1-half nav-wrapper">
+            <div class="z-depth-1-half nav-wrapper teal lighten-2">
               <a href="#" class="brand-logo left margin-left-10">OBallot</a>
 
               <ul id="nav-mobile" class="right margin-right-10">
@@ -29,9 +29,14 @@
                 <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-top-5 margin-auto">
                     <span class="f-200"> http://localhost/OBallot/ </span>
                     <div class="input-field inline">
-                        <input id="url" type="url" class="validate">
-                        <label for="url" class="active" data-error="wrong" data-success="right">Account URL</label>
+                        <input id="url" type="text" class="validate" required>
+                        <label for="url" data-error="invalid">Account URL</label>
                     </div>
+                    <div class="input-field">
+                        <input id="email" type="email" class="validate" required>
+                        <label for="email" data-error="Invalid">Email</label>
+                    </div>
+                    
                 </div>
             </div>
         </div>
