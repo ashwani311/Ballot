@@ -38,11 +38,11 @@ def validateUrl(url):
     urlQuery = session.query(Admin).filter_by(url=url).one_or_none()
 
 #function to validate for null values
-def validateNull(**data):
-    if (data['name']=="" or data['password']=="" or data['email']=="" or data['mob']=="" or data['url']==""):
-        return False
-
-    return True
+def validateNull(data):
+    for key in data:
+        if data[key] == "":
+            return True
+    return False
 
 # regex expressions to check for  username validation
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{1,10}$")
@@ -57,8 +57,9 @@ def validateEmail(email):
         return error
     return ""
 
+@app.route('/signup/<string:error>',methods=['GET', 'POST'])
 @app.route('/signup',methods=['GET', 'POST'])
-def Signup():
+def Signup(error = ""):
     if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
@@ -73,13 +74,8 @@ def Signup():
         params['password'] = password
         params['url'] = url
 
-        if (not validateNull(**params)):
-            params['error'] = "Required Field's can't be empty"
-            return render_template('signup.html', **params)
-
-        params['error'] = validateEmail(email)
-        if(params['error']!= ""):
-            return render_template('signup.html', **params)
+        if validateNull(params)
+            return "Error Null"
         else:
             user = Admin()
             user.name = name
@@ -90,7 +86,7 @@ def Signup():
 
             conn.add(user)
             conn.commit()
-            return redirect('/sucess')
+            return "Sucess"
 
     else:
         return render_template('signup.html')
