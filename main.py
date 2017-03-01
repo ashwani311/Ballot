@@ -74,7 +74,7 @@ def Signup(error = ""):
         params['password'] = password
         params['url'] = url
 
-        if validateNull(params)
+        if validateNull(params):
             return "Error Null"
         else:
             user = Admin()
