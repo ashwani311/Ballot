@@ -3,10 +3,12 @@ app = Flask(__name__)
 #--- App configration
 
 @app.route('/signup')
-def SignUp():
-    print "Hello World"
+def Signup():
     return render_template('signup.html')
-    
+
+@app.route('/login')
+def Login():
+    return render_template('login.html')
 
 if __name__ == '__main__':
     app.secret_key = 'itstimetomoveon'
