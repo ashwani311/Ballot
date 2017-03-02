@@ -79,7 +79,7 @@ def isLogged():
     if 'logged' in session and session['logged']:
         email = session['email'];
         admin = conn.query(Admin).filter_by(email=email).one_or_none()
-        return True
+        return admin
     return False
 
 def log_user(email):
@@ -98,8 +98,13 @@ def isAdmin(email,password):
 
 
 @app.route('/')
-def HelloWorld():
-    return render_template('dashboard.html')
+def Root():
+    admin = isLogged()
+    if admin:
+        return redirect(url_for('Dashboard',url = admin.url))
+    else:
+        return redirect(url_for('Login'))
+    
 
 
 @app.route('/signup',methods=['GET', 'POST'])
@@ -146,7 +151,6 @@ def Signup(error = ""):
 
 @app.route('/login',methods=['GET', 'POST'])
 def Login():
-
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['pass']
@@ -161,13 +165,18 @@ def Login():
 
         if isAdmin(email,password):
             log_user(email)
-            return
-
+            admin = conn.query(Admin).filter_by(email=email).one_or_none()
+            return redirect(url_for('Dashboard',url = admin.url))
+            
         else:
             return render_template('login.html',error = "wrongLogin")
 
     else:
         return render_template('login.html')
+
+@app.route('/dashboard/<string:url>')
+def Deashboard():
+    return render_template('dashboard.html')
 
 if __name__ == '__main__':
     app.secret_key = 'itstimetomoveon'
