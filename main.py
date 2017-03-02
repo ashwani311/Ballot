@@ -43,7 +43,6 @@ def validateUrl(url):
     return False
 
 
-
 #function to validate for null values
 def validateNull(data):
     for key in data:
@@ -59,10 +58,16 @@ def validateName(name):
 # regex expressions to check for email validation
 EMAIL_RE = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
 def validateEmail(email):
-    if(not email or EMAIL_RE.match(email)):
-        return False
-    return True
+    if EMAIL_RE.match(email):
+        return True
+    return False
+
 # regex expressions to checl for mobile validation
+MOB_RE = re.compile(r'^[0-9]{7,13}$')
+def validateMob(mob):
+    if MOB_RE.match(mob):
+        return True
+    return False
 
 @app.route('/signup',methods=['GET', 'POST'])
 def Signup(error = ""):
@@ -89,7 +94,7 @@ def Signup(error = ""):
         if not validateUrl(url):
             return render_template('signup.html',error = "urlError")
         if not validateMob(mob):
-            return render_template('signup.html',error = "urlError")
+            return render_template('signup.html',error = "mobError")
         else:
             user = Admin()
             user.name = name
