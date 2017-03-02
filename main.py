@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, url_for, session
 
 # Import SQLAlchemy
 
@@ -29,19 +29,17 @@ conn = DBSession()
 app = Flask(__name__)
 #--- App configration
 
-@app.route('/')
-def HelloWorld():
-    return render_template('dashboard.html')
+#--- Validation Functions --------#
+
 
 #function to validate url
-URL_RE = re.compile(r"^[a-zA-Z0-9_-]{1,10}$")
+URL_RE = re.compile(r"^[a-zA-Z0-9_-]{1,30}$")
 def validateUrl(url):
     if URL_RE.match(url):
         urlQuery = conn.query(Admin).filter_by(url=url).one_or_none()
         if not urlQuery:
             return True
     return False
-
 
 #function to validate for null values
 def validateNull(data):
@@ -51,15 +49,19 @@ def validateNull(data):
     return False
 
 # regex expressions to check for  username validation
-USER_RE = re.compile(r"^[a-zA-Z]{1,20}$")
+USER_RE = re.compile(r"^[a-zA-Z ]{1,20}$")
 def validateName(name):
-    return USER_RE.match(name)
+    if USER_RE.match(name):
+        return True
+    return False
 
 # regex expressions to check for email validation
 EMAIL_RE = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
 def validateEmail(email):
     if EMAIL_RE.match(email):
-        return True
+        emailQuery = conn.query(Admin).filter_by(email=email).one_or_none()
+        if not emailQuery:
+            return True
     return False
 
 # regex expressions to checl for mobile validation
@@ -68,6 +70,37 @@ def validateMob(mob):
     if MOB_RE.match(mob):
         return True
     return False
+
+# --------- Validation Ends ----------------#
+
+# --------- Help Functions -----------------#
+
+def isLogged():
+    if 'logged' in session and session['logged']:
+        email = session['email'];
+        admin = conn.query(Admin).filter_by(email=email).one_or_none()
+        return True
+    return False
+
+def log_user(email):
+    session['logged'] = True
+    session['email'] = email
+
+    
+def isAdmin(email,password):
+    if EMAIL_RE.match(email):
+        admin = conn.query(Admin).filter_by(email=email).one_or_none()
+        if admin:
+            if admin.password == password:
+                return True
+
+    return False
+
+
+@app.route('/')
+def HelloWorld():
+    return render_template('dashboard.html')
+
 
 @app.route('/signup',methods=['GET', 'POST'])
 def Signup(error = ""):
@@ -84,9 +117,9 @@ def Signup(error = ""):
         params['mob'] = mob
         params['password'] = password
         params['url'] = url
-
         if validateNull(params):
-            return render_template('signup.html',error = "NullValues")
+            return render_template('signup.html',error = "nullValues")
+        del params
         if not validateName(name):
             return render_template('signup.html',error = "nameError")
         if not validateEmail(email):
@@ -95,24 +128,46 @@ def Signup(error = ""):
             return render_template('signup.html',error = "urlError")
         if not validateMob(mob):
             return render_template('signup.html',error = "mobError")
-        else:
+        if confirmPassword == password:
             user = Admin()
             user.name = name
             user.url = url
             user.mobile = mob
             user.password = password
             user.email = email
-
             conn.add(user)
             conn.commit()
-            return "Sucess"
+            return redirect(url_for('Login'))
+        else:
+            return render_template('signup.html',error = "matchError")
 
     else:
         return render_template('signup.html',error = "")
 
-@app.route('/login')
+@app.route('/login',methods=['GET', 'POST'])
 def Login():
-    return render_template('login.html')
+
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['pass']
+
+        params = dict()
+        params['email'] = email
+        params['password'] = password
+
+        if validateNull(params):
+            return render_template('login.html',error = "nullValues")
+        del params
+
+        if isAdmin(email,password):
+            log_user(email)
+            return "Logged In"
+
+        else:
+            return render_template('login.html',error = "wrongLogin")
+
+    else:
+        return render_template('login.html')
 
 if __name__ == '__main__':
     app.secret_key = 'itstimetomoveon'
