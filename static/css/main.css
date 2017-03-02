@@ -83,3 +83,12 @@
         appearance: none;
         margin: 0; 
     }
+
+.error-text {
+    
+}
+
+.error {
+    text-align: center;
+    border: 2px solid #4db6ac;
+}
