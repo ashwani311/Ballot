@@ -9,7 +9,7 @@ import requests
 import re
 
 
-from db_setup import Base,Admin
+from db_setup import Base, Admin, Ballot
 
 # ---------------------------------------------------------------------
 #                         App configration
@@ -175,7 +175,7 @@ def Login():
         return render_template('login.html')
 
 @app.route('/dashboard/<string:url>')
-def Deashboard():
+def Dashboard(url):
     return render_template('dashboard.html')
 
 if __name__ == '__main__':
