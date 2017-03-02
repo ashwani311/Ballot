@@ -92,3 +92,28 @@
     text-align: center;
     border: 2px solid #4db6ac;
 }
+
+.dropdown-content {
+    margin-top: 64px;
+}
+
+.jumbotron {
+    font-size: 5em;
+    font-weight: 100;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.w-700 {
+    font-weight: 700;
+}
+
+.f-400 {
+    font-weight: 400;
+}
+
+.fixed-btn {
+    position: fixed;
+    right: 25px;
+    bottom: 30px;
+}
