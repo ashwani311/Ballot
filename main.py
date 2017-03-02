@@ -34,8 +34,15 @@ def HelloWorld():
     return render_template('dashboard.html')
 
 #function to validate url
+URL_RE = re.compile(r"^[a-zA-Z0-9_-]{1,10}$")
 def validateUrl(url):
-    urlQuery = session.query(Admin).filter_by(url=url).one_or_none()
+    if URL_RE.match(url):
+        urlQuery = conn.query(Admin).filter_by(url=url).one_or_none()
+        if not urlQuery:
+            return True
+    return False
+
+
 
 #function to validate for null values
 def validateNull(data):
@@ -45,19 +52,18 @@ def validateNull(data):
     return False
 
 # regex expressions to check for  username validation
-USER_RE = re.compile(r"^[a-zA-Z0-9_-]{1,10}$")
+USER_RE = re.compile(r"^[a-zA-Z]{1,20}$")
 def validateName(name):
-    return name and USER_RE.match(name)
+    return USER_RE.match(name)
 
 # regex expressions to check for email validation
 EMAIL_RE = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
 def validateEmail(email):
     if(not email or EMAIL_RE.match(email)):
-        error = "email Id not valid"
-        return error
-    return ""
+        return False
+    return True
+# regex expressions to checl for mobile validation
 
-@app.route('/signup/<string:error>',methods=['GET', 'POST'])
 @app.route('/signup',methods=['GET', 'POST'])
 def Signup(error = ""):
     if request.method == 'POST':
@@ -75,7 +81,15 @@ def Signup(error = ""):
         params['url'] = url
 
         if validateNull(params):
-            return "Error Null"
+            return render_template('signup.html',error = "NullValues")
+        if not validateName(name):
+            return render_template('signup.html',error = "nameError")
+        if not validateEmail(email):
+            return render_template('signup.html',error = "emailError")
+        if not validateUrl(url):
+            return render_template('signup.html',error = "urlError")
+        if not validateMob(mob):
+            return render_template('signup.html',error = "urlError")
         else:
             user = Admin()
             user.name = name
@@ -89,7 +103,7 @@ def Signup(error = ""):
             return "Sucess"
 
     else:
-        return render_template('signup.html')
+        return render_template('signup.html',error = "")
 
 @app.route('/login')
 def Login():
