@@ -33,27 +33,27 @@
                     <form method="post">
                         <span class="f-200"> http://localhost/OBallot/ </span>
                         <div class="input-field inline">
-                            <input id="url" type="text"  name="url">
+                            <input id="url" type="text"  name="url" required>
                             <label for="url" data-error="invalid">Account URL</label>
                         </div>
 												<div class="input-field">
-                            <input id="email" type="email"  name="email">
+                            <input id="email" type="email"  name="email" required>
                             <label for="email" data-error="invalid">Email</label>
                         </div>
                         <div class="input-field">
-                            <input id="name" type="text"  name="name">
+                            <input id="name" type="text"  name="name" required>
                             <label for="name" data-error="Invalid">Name</label>
                         </div>
                         <div class="input-field">
-                            <input id="mob" type="number"  name="mob">
+                            <input id="mob" type="number"  name="mob" required>
                             <label for="mob" data-error="Invalid">Mobile</label>
                         </div>
                         <div class="input-field">
-                            <input id="pass" type="password"  name="pass" data-length="12">
+                            <input id="pass" type="password"  name="pass" data-length="12" required>
                             <label for="pass">Password</label>
                         </div>
                         <div class="input-field">
-                            <input id="cpass" type="password" name="cpass">
+                            <input id="cpass" type="password" name="cpass" required>
                             <label for="cpass">Confirm Password</label>
                         </div>
                         <button type="submit" class="waves-effect waves-light btn">Signup</button>

@@ -86,7 +86,7 @@ def log_user(email):
     session['logged'] = True
     session['email'] = email
 
-    
+
 def isAdmin(email,password):
     if EMAIL_RE.match(email):
         admin = conn.query(Admin).filter_by(email=email).one_or_none()
@@ -161,7 +161,7 @@ def Login():
 
         if isAdmin(email,password):
             log_user(email)
-            return "Logged In"
+            return
 
         else:
             return render_template('login.html',error = "wrongLogin")

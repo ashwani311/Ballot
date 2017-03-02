@@ -10,6 +10,8 @@
 		<link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/main.css') }}">
 		<!--Let browser know website is optimized for mobile-->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<script> var error = '{{ error }}'
+		</script>
 	</head>
 	<body class="white">
         <nav>
@@ -26,21 +28,28 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-top-5 margin-auto">
-                    <div class="input-field">
-                        <input id="email" type="email" class="validate" required>
-                        <label for="email" data-error="Invalid">Email</label>
-                    </div>
-                    <div class="input-field" required>
-                        <input id="pass" type="password" class="validate" data-length="12">
-                        <label for="pass">Password</label>
-                    </div>
-                    <button type="submit" class="waves-effect waves-light btn">Login</button>
-                </div>
+							 <form method="post">
+	                <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-top-5 margin-auto">
+	                    <div class="input-field">
+	                        <input id="email" type="email" class="validate" required name="email">
+	                        <label for="email" data-error="Invalid">Email</label>
+	                    </div>
+	                    <div class="input-field" required>
+	                        <input id="pass" type="password" class="validate" data-length="12" name="pass" required>
+	                        <label for="pass">Password</label>
+	                    </div>
+	                    <button type="submit" class="waves-effect waves-light btn">Login</button>
+	                </div>
+							 </form>
             </div>
         </div>
         <script type="text/javascript" src="{{ url_for('static',filename = 'jquery/jquery.js') }} "></script>
 		<script type="text/javascript" src="{{ url_for('static',filename = 'materialize/js/materialize.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static',filename = 'js/main.js') }}"></script>
+		<script>
+			if(error){
+					console.log(error);
+			}
+		</script>
 	</body>
 </html>
