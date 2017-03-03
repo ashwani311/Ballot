@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request, url_for, session
-
+import datetime as dt
 # Import SQLAlchemy
 
 from sqlalchemy import create_engine
@@ -79,7 +79,17 @@ def validateMob(mob):
 
 
 def validateDate(date):
-    print date
+    format = "%Y/%m/%d"
+    date = dt.datetime.strptime(date, format).date()
+    now = dt.datetime.now().date()
+    if(date <= now):
+        return False
+    return date
+
+def has_previous(name,url,date):
+    ballot = conn.query(Ballot).filter_by(name=name,url=url,date=date).one_or_none()
+    if ballot:
+        return True
     return False
 # --------- Validation Ends ----------------#
 
@@ -226,10 +236,22 @@ def NewBallot(url):
             if not validateUname(name):
                 error = "nameError"
                 return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
-            if validateDate(date):
+            date = validateDate(date)
+            print date
+            if not date:
                 error = "dateError"
                 return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
-            return "hello"
+            if has_previous(name,url,date):
+                error = "hasPrevious"
+                return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            ballot = Ballot()
+            ballot.name = name
+            ballot.date = date
+            ballot.url = url
+            conn.add(ballot)
+            conn.commit()
+            return "Suck it!"
+
         else:
             return redirect(url_for('DashErrorHandler',url = admin.url, error = "InvalidUrl"))
     else:
