@@ -70,6 +70,46 @@
                 </div>
             </div>
         </div>
+				<div id="add-voter" class="modal bottom-sheet">
+            <div class="modal-content">
+              <div class="row">
+                <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-auto">
+                    <h4 class="ballot-head f-200 uppercase">Add New Voter</h4>
+                    <form method="post" action="/dashboard/{{admin.url}}/new">
+                            <div class="input-field">
+                                <input id="username" type="text"  name="username" required>
+                                <label for="username" data-error="Invalid">Username</label>
+                            </div>
+                            <div class="input-field">
+                                <input type="number" class="validate" name="mobile" id="number">
+                                <label for="number" class="active" data-error="Invalid">mobile</label>
+                            </div>
+                            <button type="submit" class="waves-effect waves-light btn">ADD</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+				<div id="add-candidate" class="modal bottom-sheet">
+            <div class="modal-content">
+              <div class="row">
+                <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-auto">
+                    <h4 class="ballot-head f-200 uppercase">Add New Candidate</h4>
+                    <form method="post" action="/dashboard/{{admin.url}}/new">
+                            <div class="input-field">
+                                <input id="cname" type="text"  name="cname" required>
+                                <label for="cname" data-error="Invalid">Candidate Name</label>
+                            </div>
+                            <div class="input-field">
+                                <textarea  class="materialize-textarea" id="description" name="description" data-length="120"></textarea>
+                                <label for="description" class="active" data-error="Invalid">Description</label>
+                            </div>
+                            <button type="submit" class="waves-effect waves-light btn">ADD</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="fixed-btn">
             <a class="btn-floating btn-large waves-effect waves-light teal lighten-3" href="#create-ballot"><i class="fa fa-plus" aria-hidden="true"></i></a>
         </div>
