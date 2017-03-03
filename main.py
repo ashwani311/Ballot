@@ -9,7 +9,7 @@ import requests
 import re
 
 
-from db_setup import Base, Admin, Ballot
+from db_setup import Base, Admin, Ballot, Voter, Option
 
 # ---------------------------------------------------------------------
 #                         App configration

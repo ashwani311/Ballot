@@ -61,14 +61,7 @@
    }
 
 /* Colors For the Input */
-@media (max-width: 767px){
-    .s-30 {
-        font-size: 20px;
-    }
-    .s-25 {
-        font-size: 15px;
-    }
-}
+
 
 .margin-auto {
     width: 100%;
@@ -116,4 +109,27 @@
     position: fixed;
     right: 25px;
     bottom: 30px;
+}
+
+.ballot-head {
+    text-align: center;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+
+@media (max-width: 767px){
+    
+    .s-30 {
+        font-size: 20px;
+    }
+    .s-25 {
+        font-size: 15px;
+    }
+    .jumbotron {
+        font-size: 2em;
+    }
+    
 }
