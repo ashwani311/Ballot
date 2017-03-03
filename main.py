@@ -55,6 +55,12 @@ def validateName(name):
         return True
     return False
 
+USERNAME_RE = re.compile(r"^[a-zA-Z]{1,20}$")
+def validateUname(name):
+    if USERNAME_RE.match(name):
+        return True
+    return False
+
 # regex expressions to check for email validation
 EMAIL_RE = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
 def validateEmail(email):
@@ -104,7 +110,7 @@ def Root():
         return redirect(url_for('Dashboard',url = admin.url))
     else:
         return redirect(url_for('Login'))
-    
+
 
 
 @app.route('/signup',methods=['GET', 'POST'])
@@ -167,7 +173,7 @@ def Login():
             log_user(email)
             admin = conn.query(Admin).filter_by(email=email).one_or_none()
             return redirect(url_for('Dashboard',url = admin.url))
-            
+
         else:
             return render_template('login.html',error = "wrongLogin")
 
@@ -176,7 +182,53 @@ def Login():
 
 @app.route('/dashboard/<string:url>')
 def Dashboard(url):
-    return render_template('dashboard.html')
+    admin = isLogged()
+    if admin:
+        if admin.url == url:
+            ballot = conn.query(Ballot).filter_by(url = url).one_or_none()
+            return render_template('dashboard.html',ballot = ballot,admin = admin,error = "")
+        else:
+            return redirect(url_for('Dashboard',url = admin.url))
+    else:
+        return redirect(url_for('Login'))
+
+#-----  Dashboard Post Handlers -------#
+@app.route('/dashboard/<string:url>/<string:error>')
+def DashErrorHandler(url,error):
+    admin = isLogged()
+    if admin:
+        if admin.url == url:
+            ballot = conn.query(Ballot).filter_by(url = url).one_or_none()
+            return render_template('dashboard.html',ballot = ballot,admin = admin, error = error)
+        else:
+            return redirect(url_for('Dashboard',url = admin.url))
+    else:
+        return redirect(url_for('Login'))
+
+
+@app.route('/dashboard/<string:url>/new',methods = ['POST'])
+def NewBallot(url):
+    admin = isLogged()
+    if admin:
+        if admin.url == url:
+            name = request.form['name']
+            date = request.form['date']
+            param = dict()
+            param['name'] = name
+            param['date'] = date
+            if validateNull(param):
+                error = "nullValues"
+                return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            if validateUname(name):
+                error = "nameError"
+                return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            if validateDate(date):
+                error = "dateError"
+                return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+        else:
+            return redirect(url_for('DashErrorHandler',url = admin.url, error = "InvalidUrl"))
+    else:
+        return redirect(url_for('Login'))
 
 if __name__ == '__main__':
     app.secret_key = 'itstimetomoveon'
