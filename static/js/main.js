@@ -21,12 +21,12 @@ $(".button-collapse").sideNav();
 
 $('.datepicker').pickadate({
     selectMonths: true, // Creates a dropdown to control month
-    selectYears: 1 // Creates a dropdown of 15 years to control year
+    selectYears: 1, // Creates a dropdown of 15 years to control year
+    formatSubmit: 'yyyy/mm/dd',
+    hiddenName: true
 });
 
 $(document).ready(function() {
     $('input#pass').characterCounter();
     $('.modal').modal();
 });
-
- 
