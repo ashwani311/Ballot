@@ -97,6 +97,9 @@
     text-transform: uppercase;
 }
 
+.jumbotron span {
+    font-size: 1em;    
+}
 .w-700 {
     font-weight: 700;
 }
@@ -130,6 +133,9 @@
     }
     .jumbotron {
         font-size: 2em;
+    }
+    .jumbotron span {
+        font-size: 1.1em;
     }
     
 }

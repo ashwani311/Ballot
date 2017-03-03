@@ -40,12 +40,14 @@
         </nav>
         <div class="container">
             <div class="row">
+               {% if not ballot %}
                 <div class="col s8 offset-s2 offset-m2 offset-l1 l10 m8  s-20 margin-top-5">
                     <div class="jumbotron">
-                         Welcome
-                         <span class="f-400 f-200">Jai</span>
+                         Welcome<br>
+                         <span class="f-400 s-3em">{{admin.name}}</span>
                     </div>
                 </div>
+               {% endif %}
             </div>
         </div>
         <div id="create-ballot" class="modal bottom-sheet">
