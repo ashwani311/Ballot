@@ -7,6 +7,8 @@ from sqlalchemy.orm import sessionmaker
 # Import DB Modules
 import requests
 import re
+import random
+import string
 
 
 from db_setup import Base, Admin, Ballot, Voter, Option
@@ -86,6 +88,10 @@ def validateDate(date):
     if(date <= now):
         return False
     return date
+
+def isPalindrome(s):
+    return s == s[::-1]
+
 
 def has_previous(name,url,date):
     ballot = conn.query(Ballot).filter_by(name=name,url=url,date=date).one_or_none()
@@ -227,13 +233,20 @@ def DashErrorHandler(url,error):
     if admin:
         if admin.url == url:
             ballot = conn.query(Ballot).filter_by(url = url).one_or_none()
+            count = dict()
             if ballot:
-                candidates = conn.query(Option).filter_by(bid = ballot.id).all()
-                voters = conn.query(Voter).filter_by(bid = ballot.id).all()
+                candidates = conn.query(Option).filter_by(bid = ballot.id)
+                voters = conn.query(Voter).filter_by(bid = ballot.id)
+                count['candidates'] = candidates.count()
+                count['voters'] = voters.count()
+                candidates = candidates.all()
+                voters = voters.all()
             else:
                 candidates = None
                 voters = None
-            return render_template('dashboard.html',ballot = ballot,admin = admin,error = "",candidates = candidates,voters = voters)
+                count['candidates'] = 0
+                count['voters'] = 0
+            return render_template('dashboard.html',ballot = ballot,admin = admin,error = "",candidates = candidates,voters = voters,count = count)
         else:
             return redirect(url_for('Dashboard',url = admin.url))
     else:
@@ -318,6 +331,49 @@ def NewCandidate(url,bid):
     else:
         return redirect(url_for('Login'))
 
+@app.route('/dashboard/<string:url>/<int:bid>/voter',methods = ['POST'])
+def NewVoter(url,bid):
+    admin = isLogged()
+    if admin:
+        if admin.url == url:
+            name = request.form['username']
+            mob = request.form['mobile']
+            param = dict()
+            param['name'] = name
+            param['mob'] = mob
+            if validateNull(param):
+                error = "nullValues"
+                return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            if not validateUname(name):
+                error = "nameError"
+                return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            if not validateMob(mob):
+                error = "mobError"
+                return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            b = conn.query(Ballot).filter_by(id = bid).one_or_none()
+            if url != b.url:
+                error = "urlError"
+                return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            previous = conn.query(Voter).filter_by(uname = name).one_or_none()
+            if previous:
+                error = "voterExist"
+                return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
+            while isPalindrome(password):
+                password = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
+            voter = Voter()
+            voter.uname = name
+            voter.password = password
+            voter.mobile = mob
+            voter.bid = b.id
+            conn.add(voter)
+            conn.commit()
+            return redirect(url_for('Dashboard',url = admin.url))
+
+        else:
+            return redirect(url_for('DashErrorHandler',url = admin.url, error = "InvalidUrl"))
+    else:
+        return redirect(url_for('Login'))
 
 @app.route('/admins')
 def Admins():
