@@ -35,6 +35,7 @@ class Option(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable = False)
+    discription = Column(String)
     bid = Column(Integer, ForeignKey('ballot.id'))
     ballot = relationship(Ballot)
 
@@ -45,6 +46,8 @@ class Voter(Base):
     uname = Column(String(250), nullable = False)
     mobile = Column(Integer, nullable = False)
     password = Column(String(250), nullable = False)
+    bid = Column(Integer, ForeignKey('ballot.id'))
+    ballot = relationship(Ballot)
 
 
 engine = create_engine('sqlite:///OBallot.db')

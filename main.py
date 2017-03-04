@@ -41,6 +41,7 @@ def validateUrl(url):
             return True
     return False
 
+
 #function to validate for null values
 def validateNull(data):
     for key in data:
@@ -200,7 +201,20 @@ def Dashboard(url):
     if admin:
         if admin.url == url:
             ballot = conn.query(Ballot).filter_by(url = url).one_or_none()
-            return render_template('dashboard.html',ballot = ballot,admin = admin,error = "")
+            count = dict()
+            if ballot:
+                candidates = conn.query(Option).filter_by(bid = ballot.id)
+                voters = conn.query(Voter).filter_by(bid = ballot.id)
+                count['candidates'] = candidates.count()
+                count['voters'] = voters.count()
+                candidates = candidates.all()
+                voters = voters.all()
+            else:
+                candidates = None
+                voters = None
+                count['candidates'] = 0
+                count['voters'] = 0
+            return render_template('dashboard.html',ballot = ballot,admin = admin,error = "",candidates = candidates,voters = voters,count = count)
         else:
             return redirect(url_for('Dashboard',url = admin.url))
     else:
@@ -213,7 +227,13 @@ def DashErrorHandler(url,error):
     if admin:
         if admin.url == url:
             ballot = conn.query(Ballot).filter_by(url = url).one_or_none()
-            return render_template('dashboard.html',ballot = ballot,admin = admin, error = error)
+            if ballot:
+                candidates = conn.query(Option).filter_by(bid = ballot.id).all()
+                voters = conn.query(Voter).filter_by(bid = ballot.id).all()
+            else:
+                candidates = None
+                voters = None
+            return render_template('dashboard.html',ballot = ballot,admin = admin,error = "",candidates = candidates,voters = voters)
         else:
             return redirect(url_for('Dashboard',url = admin.url))
     else:
@@ -250,12 +270,54 @@ def NewBallot(url):
             ballot.url = url
             conn.add(ballot)
             conn.commit()
-            return "Suck it!"
+            return redirect(url_for('Dashboard',url = admin.url))
 
         else:
             return redirect(url_for('DashErrorHandler',url = admin.url, error = "InvalidUrl"))
     else:
         return redirect(url_for('Login'))
+
+
+@app.route('/dashboard/<string:url>/<int:bid>/candidate',methods = ['POST'])
+def NewCandidate(url,bid):
+    admin = isLogged()
+    if admin:
+        if admin.url == url:
+            name = request.form['cname']
+            desc = request.form['description']
+            param = dict()
+            param['name'] = name
+            if validateNull(param):
+                error = "nullValues"
+                return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            if not validateUname(name):
+                error = "nameError"
+                return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            b = conn.query(Ballot).filter_by(id = bid).one_or_none()
+            if url != b.url:
+                error = "urlError"
+                return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            allcandidates = conn.query(Option).count()
+            if allcandidates >= 4:
+                error = "maxCandidates"
+                return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            previous = conn.query(Option).filter_by(name = name).one_or_none()
+            if previous:
+                error = "candidateExist"
+                return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            candidate = Option()
+            candidate.name = name
+            candidate.discription = desc
+            candidate.bid = b.id
+            conn.add(candidate)
+            conn.commit()
+            return redirect(url_for('Dashboard',url = admin.url))
+
+        else:
+            return redirect(url_for('DashErrorHandler',url = admin.url, error = "InvalidUrl"))
+    else:
+        return redirect(url_for('Login'))
+
 
 @app.route('/admins')
 def Admins():
