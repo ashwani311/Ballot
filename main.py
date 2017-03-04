@@ -310,7 +310,7 @@ def NewCandidate(url,bid):
             if url != b.url:
                 error = "urlError"
                 return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
-            allcandidates = conn.query(Option).count()
+            allcandidates = conn.query(Option).filter_by(bid = b.id).count()
             if allcandidates >= 4:
                 error = "maxCandidates"
                 return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
@@ -374,6 +374,16 @@ def NewVoter(url,bid):
             return redirect(url_for('DashErrorHandler',url = admin.url, error = "InvalidUrl"))
     else:
         return redirect(url_for('Login'))
+
+
+@app.route('/vote/<string:url>')
+def Vote(url):
+    now = dt.datetime.now().date()
+    ballot = conn.query(Ballot).filter_by(url = url,date = now).one_or_none()
+    if not ballot:
+        return render_template('vote.html')
+    return "SERVICE DOWN"
+
 
 @app.route('/admins')
 def Admins():
