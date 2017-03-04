@@ -5543,6 +5543,9 @@ button.btn-floating {
   margin-bottom: 5px;
   margin-right: 5px;
 }
+.chip:hover a, .chip:focus a, .chip:active, .chip {
+    color: color: rgba(0, 0, 0, 0.6) !important;
+}
 
 .chip img {
   float: left;

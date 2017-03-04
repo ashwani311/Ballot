@@ -122,6 +122,9 @@
     text-transform: uppercase;
 }
 
+.chip-hover:hover {
+    background-color: #9e9e9e;
+}
 
 @media (max-width: 767px){
     
