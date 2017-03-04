@@ -77,7 +77,8 @@ def validateEmail(email):
 MOB_RE = re.compile(r'^[0-9]{7,13}$')
 def validateMob(mob):
     if MOB_RE.match(mob):
-        return True
+        if len(str(mob)) == 10:
+            return True
     return False
 
 
