@@ -95,21 +95,26 @@
                             <div class="card grey lighten-5">
                                 <div class="card-content">
                                     <table class="striped uppercase responsive-table centered">
-                                        <tr>
-                                            <th class="text-center">Name</th>
-                                            <th class="text-center">Mobile</th>
-                                            <th class="text-center">Password</th>
+                                       <thead>
+                                           <tr>
+                                            <th>Name</th>
+                                            <th>Mobile</th>
+                                            <th>Password</th>
                                         </tr>
-                                        <tr>
-                                            <td>Jai</td>
-                                            <td>8427611077</td>
-                                            <td>dh3jf8</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jigyasa</td>
-                                            <td>8427662638</td>
-                                            <td>dh3jf8</td>
-                                        </tr>
+                                       </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Jai</td>
+                                                <td>8427611077</td>
+                                                <td>dh3jf8</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Jigyasa</td>
+                                                <td>8427662638</td>
+                                                <td>dh3jf8</td>
+                                            </tr>
+                                        </tbody>
+                                        
                                     </table>
                                 </div>
                             </div>
@@ -145,7 +150,7 @@
               <div class="row">
                 <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-auto">
                     <h4 class="ballot-head f-200 uppercase">Add New Voter</h4>
-                    <form method="post" action="/dashboard/{{admin.url}}/new">
+                    <form method="post" action="/dashboard/{{admin.url}}/voter">
                             <div class="input-field">
                                 <input id="username" type="text"  name="username" required>
                                 <label for="username" data-error="Invalid">Username</label>
@@ -165,7 +170,7 @@
               <div class="row">
                 <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-auto">
                     <h4 class="ballot-head f-200 uppercase">Add New Candidate</h4>
-                    <form method="post" action="/dashboard/{{admin.url}}/new">
+                        <form method="post" action="/dashboard/{{admin.url}}/candidate">
                             <div class="input-field">
                                 <input id="cname" type="text"  name="cname" required>
                                 <label for="cname" data-error="Invalid">Candidate Name</label>
