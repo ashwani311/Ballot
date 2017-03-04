@@ -354,7 +354,7 @@ def NewVoter(url,bid):
             if url != b.url:
                 error = "urlError"
                 return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
-            previous = conn.query(Voter).filter_by(uname = name).one_or_none()
+            previous = conn.query(Voter).filter_by(uname = name,bid = bid).one_or_none()
             if previous:
                 error = "voterExist"
                 return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
