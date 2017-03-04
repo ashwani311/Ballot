@@ -11,7 +11,7 @@ import random
 import string
 
 
-from db_setup import Base, Admin, Ballot, Voter, Option
+from db_setup import Base, Admin, Ballot, Voter, Option, Vote, Log
 
 # ---------------------------------------------------------------------
 #                         App configration
@@ -306,6 +306,7 @@ def NewCandidate(url,bid):
             if not validateUname(name):
                 error = "nameError"
                 return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            name = name.lower()
             b = conn.query(Ballot).filter_by(id = bid).one_or_none()
             if url != b.url:
                 error = "urlError"
@@ -347,6 +348,7 @@ def NewVoter(url,bid):
             if not validateUname(name):
                 error = "nameError"
                 return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            name = name.lower()
             if not validateMob(mob):
                 error = "mobError"
                 return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
@@ -380,9 +382,7 @@ def NewVoter(url,bid):
 def Vote(url):
     now = dt.datetime.now().date()
     ballot = conn.query(Ballot).filter_by(url = url,date = now).one_or_none()
-    if not ballot:
-        return render_template('vote.html')
-    return "SERVICE DOWN"
+    return render_template('vote.html',error = True,ballot = ballot)
 
 
 @app.route('/admins')

@@ -17,17 +17,20 @@
         <nav>
             <div class="z-depth-1-half nav-wrapper teal lighten-2">
               <a href="#" class="brand-logo left margin-left-10">OBallot</a>
-
-              <ul id="nav-mobile" class="right margin-right-10">
-                <li><a href="/signup">Signup</a></li>
-              </ul>
             </div>
         </nav>
         <div class="signup-title grey lighten-3 center-align padding-top-20px">
-            <span class="f-200 s-30 grey-text text-darken-1"> Login to your <span class="brand-logo" >OBallot</span> Account </span>
+            <span class="f-200 s-30 grey-text text-darken-1"> Welcome to  <span class="brand-logo" >OBallot</span>. </span>
         </div>
         <div class="container">
             <div class="row">
+							{% if not ballot %}
+								<div class="col s10 offset-s1 offset-m2 offset-l1 l10 m8  s-20 margin-top-5">
+										<div class="jumbotron">
+												<span class="f-400 s-3em">Ballot Not Found</span>
+										</div>
+								</div>
+							{% else %}
 							 <form method="post">
 	                <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-top-5 margin-auto">
 	                    <div class="input-field">
@@ -41,6 +44,7 @@
 	                    <button type="submit" class="waves-effect waves-light btn">Login</button>
 	                </div>
 							 </form>
+							{% endif %}
             </div>
         </div>
         <script type="text/javascript" src="{{ url_for('static',filename = 'jquery/jquery.js') }} "></script>
