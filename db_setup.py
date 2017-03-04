@@ -49,6 +49,25 @@ class Voter(Base):
     bid = Column(Integer, ForeignKey('ballot.id'))
     ballot = relationship(Ballot)
 
+class Vote(Base):
+    __tablename__ = 'vote'
+
+    id = Column(Integer, primary_key=True)
+    bid = Column(Integer, ForeignKey('ballot.id'))
+    ballot = relationship(Ballot)
+    cid = Column(Integer, ForeignKey('option.id'))
+    option = relationship(Option)
+
+class Log(Base):
+    __tablename__ = 'log'
+
+    id = Column(Integer, primary_key=True)
+    bid = Column(Integer, ForeignKey('ballot.id'))
+    ballot = relationship(Ballot)
+    vid = Column(Integer, ForeignKey('voter.id'))
+    voter = relationship(Voter)
+
+
 
 engine = create_engine('sqlite:///OBallot.db')
 Base.metadata.create_all(engine)
