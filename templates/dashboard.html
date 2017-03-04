@@ -48,14 +48,73 @@
                     </div>
                 </div>
                {% else %}
-                 <div class="col s8 offset-s2 offset-m2 offset-l1 l10 m8 s-20 margin-top-5">
+                 <div class="col s10 offset-s1 offset-m2 offset-l1 l10 m8 margin-top-5">
                    <div class="card-panel teal lighten-2 white-text">
                       <div class="jumbotron">
                          {{ ballot.name }}
                       </div>
+                   </div>
+                   {% if candidates %}
+                    <div class="row">
+                        <div class="col s12 m3">
+                          <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                              <span class="card-title">Candidate 1</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col s12 m3">
+                          <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                              <span class="card-title">Candidate 2</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col s12 m3">
+                          <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                              <span class="card-title">Candidate 3</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col s12 m3">
+                          <div class="card blue-grey darken-1">
+                            <div class="card-content white-text">
+                              <span class="card-title">Candidate 4</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% endif %}
+                    <div class="col s12">
+                        <a href="#add-voter"> <div class="chip chip-hover right"> 0 Voters</div> </a>
+                        <a href="#add-candidate"> <div class="chip chip-hover right"> 0/4 Candidates </div> </a>
                     </div>
-                     <div class="chip chip-hover"> <a> No Candidates Added </a> </div>
-                     <div class="chip chip-hover right"> <a>  No Voters Added </a> </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card grey lighten-5">
+                                <div class="card-content">
+                                    <table class="striped uppercase responsive-table centered">
+                                        <tr>
+                                            <th class="text-center">Name</th>
+                                            <th class="text-center">Mobile</th>
+                                            <th class="text-center">Password</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Jai</td>
+                                            <td>8427611077</td>
+                                            <td>dh3jf8</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jigyasa</td>
+                                            <td>8427662638</td>
+                                            <td>dh3jf8</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                {% endif %}
                
@@ -81,7 +140,7 @@
                 </div>
             </div>
         </div>
-				<div id="add-voter" class="modal bottom-sheet">
+        <div id="add-voter" class="modal bottom-sheet">
             <div class="modal-content">
               <div class="row">
                 <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-auto">
@@ -101,7 +160,7 @@
                 </div>
             </div>
         </div>
-				<div id="add-candidate" class="modal bottom-sheet">
+        <div id="add-candidate" class="modal bottom-sheet">
             <div class="modal-content">
               <div class="row">
                 <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-auto">
