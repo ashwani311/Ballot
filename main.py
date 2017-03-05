@@ -435,11 +435,33 @@ def VoteLogin(url):
         ballot = conn.query(Ballot).filter_by(url = url,date = now).one_or_none()
         return render_template('vote_login.html',error = "No Ballot Found" ,ballot = ballot)
 
-@app.route('/vote')
+@app.route('/vote',methods=['GET','POST'])
 def Vote():
-    ballot = isVoteAllowed()
-    if ballot:
-        return render_template('vote.html',ballot = ballot)
+    if request.method == 'POST':
+        pass = request.form['passkey']
+        otp = request.form['otp']
+        cid = 1
+        param = dict()
+        param['pass'] = pass
+        param['otp'] = otp
+        if validateNull(param):
+            return "nullValues"
+        voter = conn.query(Voter).filer_by(id = session['id']).one_or_none()
+        ballot = conn.query(Ballot).filter_by(id = session['bid']).one_or_none()
+
+        if False:
+            return "OTP Error"
+        if True:
+            if voter.password == passkey:
+                vote =  Vote()
+                vote.bid = ballot.id
+                vote.cid = cid
+                log = Log()
+
+    else:
+        ballot = isVoteAllowed()
+        if ballot:
+            return render_template('vote.html',ballot = ballot)
 
 
 @app.route('/admins')
