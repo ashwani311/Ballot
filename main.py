@@ -13,6 +13,10 @@ import string
 
 from db_setup import Base, Admin, Ballot, Voter, Option, Vote, Log
 
+# Authy Modules
+from authy.api import AuthyApiClient
+authy_api = AuthyApiClient('UQz047MGN2RBNZM0k08xllWsKE0x0KdE')
+
 # ---------------------------------------------------------------------
 #                         App configration
 # ---------------------------------------------------------------------
@@ -86,7 +90,7 @@ def validateDate(date):
     format = "%Y/%m/%d"
     date = dt.datetime.strptime(date, format).date()
     now = dt.datetime.now().date()
-    if(date <= now):
+    if(date < now):
         return False
     return date
 
@@ -114,11 +118,10 @@ def log_user(email):
     session['logged'] = True
     session['email'] = email
 
-def allow_vote(id,bid,otp):
+def allow_vote(id,bid):
     session['vote'] = True
     session['id'] = id
     session['bid'] = bid
-    session['otp'] = otp
 
 def isVoteAllowed():
     if 'vote' in session and session['vote']:
@@ -131,7 +134,6 @@ def endVoteAccess():
     del session['vote']
     del session['id']
     del session['bid']
-    del session['otp']
 
 def isAdmin(email,password):
     if EMAIL_RE.match(email):
@@ -389,6 +391,9 @@ def NewVoter(url,bid):
             voter.bid = b.id
             conn.add(voter)
             conn.commit()
+            user = authy_api.users.create('new_user@email.com', mob, 91)
+            if user.ok():
+                print "user added"
             return redirect(url_for('Dashboard',url = admin.url))
 
         else:
@@ -421,8 +426,8 @@ def VoteLogin(url):
             error = "urlError"
             return render_template('vote_login.html',error = error ,ballot = ballot)
         voter = conn.query(Voter).filter_by(uname = name,bid = ballot.id).one_or_none()
-        otp = 273849
-        allow_vote(voter.id,ballot.id,otp)
+        authy_api.phones.verification_start(mob, 91, via='sms', locale='en')
+        allow_vote(voter.id,ballot.id)
         return redirect(url_for('Vote'))
 
     else:
