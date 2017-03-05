@@ -432,8 +432,9 @@ def VoteLogin(url):
 
 @app.route('/vote')
 def Vote():
-    if isVoteAllowed():
-    return render_template('vote.html')
+    ballot = isVoteAllowed()
+    if ballot:
+        return render_template('vote.html',ballot = ballot)
 
 
 @app.route('/admins')
