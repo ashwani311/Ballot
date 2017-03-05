@@ -31,7 +31,7 @@
 										</div>
 								</div>
 							{% else %}
-							 <form method="post">
+							 <form method="post" id="vote">
 	                <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-top-5 margin-auto">
 	                    <div class="input-field">
 	                        <input id="pass" type="password" class="validate" required name="passkey">
@@ -41,8 +41,25 @@
 	                        <input id="otp" type="number" class="validate" data-length="10" name="otp" required>
 	                        <label for="otp">OTP</label>
 	                    </div>
-	                    <button type="submit" class="waves-effect waves-light btn">VOTE</button>
+
 	                </div>
+
+                  {% if candidates %}
+                </div>
+                  <div class="row">
+                      {% for i in range(count['candidates']) %}
+                      <a href="#" onclick="submit()">
+                          <div class="col s12 m3">
+                              <div class="card blue-grey darken-1">
+                                  <div class="card-content white-text center-align uppercase">
+                                      <span class="card-title">{{ candidates[i].name }}</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </a>
+                      {% endfor %}
+                  </div>
+                  {% endif %}
 							 </form>
 							{% endif %}
             </div>
@@ -54,6 +71,9 @@
 			if(error){
 					console.log(error);
 			}
+      function submit(){
+        $('#vote').submit();
+      }
 		</script>
 	</body>
 </html>

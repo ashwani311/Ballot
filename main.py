@@ -11,7 +11,7 @@ import random
 import string
 
 
-from db_setup import Base, Admin, Ballot, Voter, Option, Vote, Log
+from db_setup import Base, Admin, Ballot, Voter, Option, Vote, Log, RLog
 
 # Authy Modules
 from authy.api import AuthyApiClient
@@ -101,6 +101,15 @@ def isPalindrome(s):
 def has_previous(name,url,date):
     ballot = conn.query(Ballot).filter_by(name=name,url=url,date=date).one_or_none()
     if ballot:
+        return True
+    return False
+
+def is_Logged(voter):
+    log = conn.query(Log).filter_by(vid = voter.id).one_or_none()
+    if log:
+        return True
+    log = conn.query(RLog).filter_by(vid = voter.id).one_or_none()
+    if log:
         return True
     return False
 # --------- Validation Ends ----------------#
@@ -428,7 +437,7 @@ def VoteLogin(url):
         voter = conn.query(Voter).filter_by(uname = name,bid = ballot.id).one_or_none()
         authy_api.phones.verification_start(mob, 91, via='sms', locale='en')
         allow_vote(voter.id,ballot.id)
-        return redirect(url_for('Vote'))
+        return redirect(url_for('Voteu'))
 
     else:
         now = dt.datetime.now().date()
@@ -436,7 +445,7 @@ def VoteLogin(url):
         return render_template('vote_login.html',error = "No Ballot Found" ,ballot = ballot)
 
 @app.route('/vote',methods=['GET','POST'])
-def Vote():
+def Voteu():
     if request.method == 'POST':
         passk = request.form['passkey']
         otp = request.form['otp']
@@ -445,23 +454,51 @@ def Vote():
         param['pass'] = passk
         param['otp'] = otp
         if validateNull(param):
-            return "nullValues"
+            error = "Null Values"
+            return render_template('voted.html',error = error)
+        ballot = isVoteAllowed()
+
+        if not ballot:
+            error = "Already Voted"
+            return render_template('voted.html',error = error)
+
         voter = conn.query(Voter).filter_by(id = session['id']).one_or_none()
-        ballot = conn.query(Ballot).filter_by(id = session['bid']).one_or_none()
+
 
         if not authy_api.phones.verification_check(voter.mobile, 91, otp).ok():
             return "OTP Error"
-        if True:
+
+        if not is_Logged(voter):
             if voter.password == passk:
-                vote =  Vote()
+                vote = Vote()
                 vote.bid = ballot.id
-                vote.cid = cid
+                vote.cid = voter.id
                 log = Log()
+                log.bid = ballot.id
+                log.vid = voter.id
+                conn.add(vote)
+                conn.add(log)
+                conn.commit()
+                endVoteAccess()
+            if voter.password == passk[::-1]:
+                log = RLog()
+                log.bid = ballot.id
+                log.vid = voter.id
+                conn.add(log)
+                conn.commit()
+                endVoteAccess()
+            return render_template('voted.html',error = None)
+        return render_template('voted.html',error = "Already Voted")
+
 
     else:
         ballot = isVoteAllowed()
         if ballot:
-            return render_template('vote.html',ballot = ballot)
+            candidates = conn.query(Option).filter_by(bid = ballot.id)
+            count = dict()
+            count['candidates'] = candidates.count()
+            candidates = candidates.all()
+            return render_template('vote.html',ballot = ballot,candidates = candidates, count = count)
 
 
 @app.route('/admins')

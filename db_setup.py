@@ -67,6 +67,15 @@ class Log(Base):
     vid = Column(Integer, ForeignKey('voter.id'))
     voter = relationship(Voter)
 
+class RLog(Base):
+    __tablename__ = 'rlog'
+
+    id = Column(Integer, primary_key=True)
+    bid = Column(Integer, ForeignKey('ballot.id'))
+    ballot = relationship(Ballot)
+    vid = Column(Integer, ForeignKey('voter.id'))
+    voter = relationship(Voter)
+
 
 
 engine = create_engine('sqlite:///OBallot.db')
