@@ -114,6 +114,24 @@ def log_user(email):
     session['logged'] = True
     session['email'] = email
 
+def allow_vote(id,bid,otp):
+    session['vote'] = True
+    session['id'] = id
+    session['bid'] = bid
+    session['otp'] = otp
+
+def isVoteAllowed():
+    if 'vote' in session and session['vote']:
+        bid = session['bid']
+        ballot = conn.query(Ballot).filter_by(id = bid).one_or_none()
+        return ballot
+    return None
+
+def endVoteAccess():
+    del session['vote']
+    del session['id']
+    del session['bid']
+    del session['otp']
 
 def isAdmin(email,password):
     if EMAIL_RE.match(email):
@@ -379,17 +397,50 @@ def NewVoter(url,bid):
         return redirect(url_for('Login'))
 
 
-@app.route('/vote/<string:url>')
-def Vote(url):
-    now = dt.datetime.now().date()
-    ballot = conn.query(Ballot).filter_by(url = url,date = now).one_or_none()
-    return render_template('vote.html',error = True,ballot = ballot)
+@app.route('/vote/<string:url>',methods = ['GET','POST'])
+def VoteLogin(url):
+    if request.method == 'POST':
+        name = request.form['name']
+        mob = request.form['mob']
+        param = dict()
+        param['name'] = name
+        param['mob'] = mob
+        now = dt.datetime.now().date()
+        ballot = conn.query(Ballot).filter_by(url = url,date = now).one_or_none()
+        if validateNull(param):
+            error = "nullValues"
+            return render_template('vote_login.html',error = error ,ballot = ballot)
+        if not validateUname(name):
+            error = "nameError"
+            return render_template('vote_login.html',error = error ,ballot = ballot)
+        name = name.lower()
+        if not validateMob(mob):
+            error = "mobError"
+            return render_template('vote_login.html',error = error ,ballot = ballot)
+        if url != ballot.url:
+            error = "urlError"
+            return render_template('vote_login.html',error = error ,ballot = ballot)
+        voter = conn.query(Voter).filter_by(uname = name,bid = ballot.id).one_or_none()
+        otp = 273849
+        allow_vote(voter.id,ballot.id,otp)
+        return redirect(url_for('Vote'))
+
+    else:
+        now = dt.datetime.now().date()
+        ballot = conn.query(Ballot).filter_by(url = url,date = now).one_or_none()
+        return render_template('vote_login.html',error = "No Ballot Found" ,ballot = ballot)
+
+@app.route('/vote')
+def Vote():
+    if isVoteAllowed():
+    return render_template('vote.html')
 
 
 @app.route('/admins')
 def Admins():
     admins = conn.query(Admin).all()
     return render_template('admins.html',admins = admins)
+
 
 @app.route('/logout')
 def logOut():
