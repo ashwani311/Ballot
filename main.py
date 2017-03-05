@@ -501,6 +501,11 @@ def Voteu():
             return render_template('vote.html',ballot = ballot,candidates = candidates, count = count)
 
 
+@app.route('/result/<string:url>')
+def Result(url):
+    ballot = conn.query(Ballot).filter_by(url = url).one_or_none()
+    return render_template('result.html',ballot = ballot)
+
 @app.route('/admins')
 def Admins():
     admins = conn.query(Admin).all()
