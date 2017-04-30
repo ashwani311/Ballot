@@ -77,6 +77,10 @@ def validateMob(mob):
         return True
     return False
 
+
+def validateDate(date):
+    print date
+    return False
 # --------- Validation Ends ----------------#
 
 # --------- Help Functions -----------------#
@@ -219,16 +223,22 @@ def NewBallot(url):
             if validateNull(param):
                 error = "nullValues"
                 return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
-            if validateUname(name):
+            if not validateUname(name):
                 error = "nameError"
                 return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
             if validateDate(date):
                 error = "dateError"
                 return redirect(url_for('DashErrorHandler',url = admin.url, error = error))
+            return "hello"
         else:
             return redirect(url_for('DashErrorHandler',url = admin.url, error = "InvalidUrl"))
     else:
         return redirect(url_for('Login'))
+
+@app.route('/admins')
+def Admins():
+    admins = conn.query(Admin).all()
+    return render_template('admins.html',admins = admins)
 
 if __name__ == '__main__':
     app.secret_key = 'itstimetomoveon'

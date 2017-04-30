@@ -40,14 +40,27 @@
         </nav>
         <div class="container">
             <div class="row">
-               {% if not ballot %}
+
                 <div class="col s8 offset-s2 offset-m2 offset-l1 l10 m8  s-20 margin-top-5">
                     <div class="jumbotron">
-                         Welcome<br>
-                         <span class="f-400 s-3em">{{admin.name}}</span>
+                         Admins
+                         <table class="striped s-30">
+                           <tr>
+                             <th>Name</th>
+                             <th>Email</th>
+                             <th>Password</th>
+                           </tr>
+                           {%for row in admins%}
+                           <tr>
+                             <td>{{row.name}}</td>
+                             <td>{{row.email}}</td>
+                             <td>{{row.password}}</td>
+                           </tr>
+                           {%endfor%}
+                         </table>
                     </div>
                 </div>
-               {% endif %}
+
             </div>
         </div>
         <div id="create-ballot" class="modal bottom-sheet">
@@ -55,7 +68,7 @@
               <div class="row">
                 <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-auto">
                     <h4 class="ballot-head f-200 uppercase">Create New Ballot</h4>
-                    <form method="post" action="/dashboard/{{admin.url}}/new">
+                    <form method="post">
                             <div class="input-field">
                                 <input id="name" type="text"  name="name" required>
                                 <label for="name" data-error="Invalid">Ballot Name</label>
@@ -66,7 +79,7 @@
                             </div>
                             <button type="submit" class="waves-effect waves-light btn">CREATE</button>
                         </form>
-                    </div>
+                  </div>
                 </div>
             </div>
         </div>
