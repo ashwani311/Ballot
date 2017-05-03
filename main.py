@@ -380,6 +380,12 @@ def Admins():
     admins = conn.query(Admin).all()
     return render_template('admins.html',admins = admins)
 
+@app.route('/logout')
+def logOut():
+    session['logged'] = False
+    del session['email']
+    return redirect(url_for('Login'))
+
 if __name__ == '__main__':
     app.secret_key = 'itstimetomoveon'
     app.debug = True
