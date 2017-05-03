@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html>
-	<head>
-	    <title>  OBallot | Dashboard   </title>
-		<!--Import Font Awesome Icons -->
-		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-		<link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
-		<!--Import materialize.css-->
-		<link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'materialize/css/materialize.css') }}"  media="screen,projection"/>
-		<link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/main.css') }}">
-		<!--Let browser know website is optimized for mobile-->
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	</head>
-	<body class="grey lighten-5">
-
-		<ul id="slide-out" class="side-nav white darken-2 z-depth-3">
-			<li>
-				<div class="userView">
-					<a><span id="userName" class="white-text name"></span></a>
-					<a><span id="userEmail" class="white-text email f-100"></span></a>
-				</div>
+    <head>
+        <title>  OBallot | Dashboard   </title>
+        <!--Import Font Awesome Icons -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'materialize/css/materialize.css') }}"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/main.css') }}">
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body class="grey lighten-5">
+        <ul id="slide-out" class="side-nav white darken-2 z-depth-3">
+            <li>
+                <div class="userView">
+                    <a><span id="userName" class="white-text name"></span></a>
+                    <a><span id="userEmail" class="white-text email f-100"></span></a>
+                </div>
             </li>
 			<li><a class="waves-effect" id="logout" href="/logout"> <i class="fa fa-power-off" aria-hidden="true"></i>Sign Out</a></li>
 		</ul>
@@ -29,109 +28,91 @@
         </ul>
         <nav>
             <div class="z-depth-1 nav-wrapper teal lighten-2">
-              <a href="#" class="brand-logo center">OBallot</a>
-              <a id="sideNavbtn" class="button-collapse" data-activates="slide-out"><i class="fa fa-bars fa-3" aria-hidden="true"></i>
-              </a>
-              <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li class="active"><a href="#">Dashboard</a></li>
-                 <li><a class="dropdown-button" href="#" data-activates="dropdown">Settings <i class="fa fa-angle-down" aria-hidden="true"></i></a></li>
-              </ul>
+                <a href="#" class="brand-logo center">OBallot</a>
+                <a id="sideNavbtn" class="button-collapse" data-activates="slide-out"><i class="fa fa-bars fa-3" aria-hidden="true"></i>
+                </a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="active"><a href="#">Dashboard</a></li>
+                    <li><a class="dropdown-button" href="#" data-activates="dropdown">Settings <i class="fa fa-angle-down" aria-hidden="true"></i></a></li>
+                </ul>
             </div>
         </nav>
         <div class="container">
             <div class="row">
-               {% if not ballot %}
+                {% if not ballot %}
                 <div class="col s10 offset-s1 offset-m2 offset-l1 l10 m8  s-20 margin-top-5">
                     <div class="jumbotron">
-                         Welcome<br>
-                         <span class="f-400 s-3em">{{admin.name}}</span>
+                        Welcome<br>
+                        <span class="f-400 s-3em">{{admin.name}}</span>
                     </div>
                 </div>
-               {% else %}
-                 <div class="col s10 offset-s1 offset-m2 offset-l1 l10 m8 margin-top-5">
-                   <div class="card-panel teal lighten-2 white-text">
-                      <div class="jumbotron">
-                         {{ ballot.name }}
-                      </div>
-                   </div>
-                   {% if candidates %}
-                    <div class="row">
-											{% for i in range(count['candidates']) %}
-                        <div class="col s12 m3">
-                          <div class="card blue-grey darken-1">
-                            <div class="card-content white-text center-align uppercase">
-                              <span class="card-title">{{ candidates[i].name }}</span>
-                            </div>
-                          </div>
+                {% else %}
+                <div class="col s10 offset-s1 offset-m2 offset-l1 l10 m8 margin-top-5">
+                    <div class="card-panel teal lighten-2 white-text">
+                        <div class="jumbotron">
+                            {{ ballot.name }}
                         </div>
-												{% endfor %}
-                      </div>
+                    </div>
+                    {% if candidates %}
+                    <div class="row">
+                        {% for i in range(count['candidates']) %}
+                        <div class="col s12 m3">
+                            <div class="card blue-grey darken-1">
+                                <div class="card-content white-text center-align uppercase">
+                                    <span class="card-title">{{ candidates[i].name }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
                     {% endif %}
                     <div class="col s12">
-                        <a href="#add-voter"> <div class="chip chip-hover right"> {{count['voters']}} Voters</div> </a>
-                        <a href="#add-candidate"> <div class="chip chip-hover right"> {{count['candidates']}}/4 Candidates </div> </a>
+                        <a href="#add-voter">
+                            <div class="chip chip-hover right"> {{count['voters']}} Voters</div>
+                        </a>
+                        <a href="#add-candidate">
+                            <div class="chip chip-hover right"> {{count['candidates']}}/4 Candidates </div>
+                        </a>
                     </div>
+                    {% if voters %}
                     <div class="row">
                         <div class="col s12">
                             <div class="card grey lighten-5">
                                 <div class="card-content">
                                     <table class="striped uppercase responsive-table centered">
-                                       <thead>
-                                           <tr>
-                                            <th>Name</th>
-                                            <th>Mobile</th>
-                                            <th>Password</th>
-                                        </tr>
-                                       </thead>
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Mobile</th>
+                                                <th>Password</th>
+                                            </tr>
+                                        </thead>
                                         <tbody>
+                                           {% for i in range(count['voters']) %}
                                             <tr>
-                                                <td>Jai</td>
-                                                <td>8427611077</td>
-                                                <td>dh3jf8</td>
+                                                <td>{{voters[i].uname}}</td>
+                                                <td>{{voters[i].mobile}}</td>
+                                                <td>{{voters[i].password}}</td>
                                             </tr>
-                                            <tr>
-                                                <td>Jigyasa</td>
-                                                <td>8427662638</td>
-                                                <td>dh3jf8</td>
-                                            </tr>
+                                            {% endfor %}
                                         </tbody>
-
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
-               {% endif %}
-
+                {% endif %}
             </div>
         </div>
-        <div id="create-ballot" class="modal bottom-sheet">
-            <div class="modal-content">
-              <div class="row">
-                <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-auto">
-                    <h4 class="ballot-head f-200 uppercase">Create New Ballot</h4>
-                    <form method="post" action="/dashboard/{{admin.url}}/new">
-                            <div class="input-field">
-                                <input id="name" type="text"  name="name" required>
-                                <label for="name" data-error="Invalid">Ballot Name</label>
-                            </div>
-                            <div class="input-field">
-                                <input type="date" class="datepicker" name="date">
-                                <label for="name" class="active" data-error="Invalid">Date</label>
-                            </div>
-                            <button type="submit" class="waves-effect waves-light btn">CREATE</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% if ballot%}
         <div id="add-voter" class="modal bottom-sheet">
             <div class="modal-content">
-              <div class="row">
-                <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-auto">
-                    <h4 class="ballot-head f-200 uppercase">Add New Voter</h4>
-                    <form method="post" action="/dashboard/{{admin.url}}/voter">
+                <div class="row">
+                    <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-auto">
+                        <h4 class="ballot-head f-200 uppercase">Add New Voter</h4>
+                        <form method="post" action="/dashboard/{{admin.url}}/{{ballot.id}}/voter">
                             <div class="input-field">
                                 <input id="username" type="text"  name="username" required>
                                 <label for="username" data-error="Invalid">Username</label>
@@ -148,9 +129,9 @@
         </div>
         <div id="add-candidate" class="modal bottom-sheet">
             <div class="modal-content">
-              <div class="row">
-                <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-auto">
-                    <h4 class="ballot-head f-200 uppercase">Add New Candidate</h4>
+                <div class="row">
+                    <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-auto">
+                        <h4 class="ballot-head f-200 uppercase">Add New Candidate</h4>
                         <form method="post" action="/dashboard/{{admin.url}}/{{ballot.id}}/candidate">
                             <div class="input-field">
                                 <input id="cname" type="text"  name="cname" required>
@@ -166,11 +147,33 @@
                 </div>
             </div>
         </div>
+        {% else %}
+        <div id="create-ballot" class="modal bottom-sheet">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col s8 offset-s2 offset-m2 m8 offset-l4 l5 s-20 margin-auto">
+                        <h4 class="ballot-head f-200 uppercase">Create New Ballot</h4>
+                        <form method="post" action="/dashboard/{{admin.url}}/new">
+                            <div class="input-field">
+                                <input id="name" type="text"  name="name" required>
+                                <label for="name" data-error="Invalid">Ballot Name</label>
+                            </div>
+                            <div class="input-field">
+                                <input type="date" class="datepicker" name="date">
+                                <label for="name" class="active" data-error="Invalid">Date</label>
+                            </div>
+                            <button type="submit" class="waves-effect waves-light btn">CREATE</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="fixed-btn">
             <a class="btn-floating btn-large waves-effect waves-light teal lighten-3" href="#create-ballot"><i class="fa fa-plus" aria-hidden="true"></i></a>
         </div>
-				<script type="text/javascript" src="{{ url_for('static',filename = 'jquery/jquery.js') }} "></script>
-		<script type="text/javascript" src="{{ url_for('static',filename = 'materialize/js/materialize.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static',filename = 'js/main.js') }}"></script>
-	</body>
+        {% endif %}
+        <script type="text/javascript" src="{{ url_for('static',filename = 'jquery/jquery.js') }} "></script>
+        <script type="text/javascript" src="{{ url_for('static',filename = 'materialize/js/materialize.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename = 'js/main.js') }}"></script>
+    </body>
 </html>
