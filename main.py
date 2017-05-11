@@ -438,21 +438,21 @@ def VoteLogin(url):
 @app.route('/vote',methods=['GET','POST'])
 def Vote():
     if request.method == 'POST':
-        pass = request.form['passkey']
+        passk = request.form['passkey']
         otp = request.form['otp']
         cid = 1
         param = dict()
-        param['pass'] = pass
+        param['pass'] = passk
         param['otp'] = otp
         if validateNull(param):
             return "nullValues"
-        voter = conn.query(Voter).filer_by(id = session['id']).one_or_none()
+        voter = conn.query(Voter).filter_by(id = session['id']).one_or_none()
         ballot = conn.query(Ballot).filter_by(id = session['bid']).one_or_none()
 
-        if False:
+        if not authy_api.phones.verification_check(voter.mobile, 91, otp).ok():
             return "OTP Error"
         if True:
-            if voter.password == passkey:
+            if voter.password == passk:
                 vote =  Vote()
                 vote.bid = ballot.id
                 vote.cid = cid
