@@ -11,7 +11,7 @@
 * string
 
 ### How to run.
-Then move inside the Project Directory:
+Move inside the Project Directory:
 
 Open a terminal there.
 
